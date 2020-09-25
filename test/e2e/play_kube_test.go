@@ -31,6 +31,9 @@ kind: Pod
 metadata:
   creationTimestamp: "2019-07-17T14:44:08Z"
   name: {{ .Name }}
+  {{- if .Namespace }}
+  namespace: {{ .Namespace }}
+  {{- end }}
   labels:
     app: {{ .Name }}
 {{ with .Labels }}
@@ -277,6 +280,7 @@ func generateDeploymentKubeYaml(deployment *Deployment, fileName string) error {
 // Pod describes the options a kube yaml can be configured at pod level
 type Pod struct {
 	Name          string
+	Namespace     string
 	RestartPolicy string
 	Hostname      string
 	HostAliases   []HostAlias
@@ -319,6 +323,12 @@ type podOption func(*Pod)
 func withPodName(name string) podOption {
 	return func(pod *Pod) {
 		pod.Name = name
+	}
+}
+
+func withNamespace(ns string) podOption {
+	return func(pod *Pod) {
+		pod.Namespace = ns
 	}
 }
 
@@ -1176,5 +1186,21 @@ spec:
 			Expect(inspect.ExitCode()).To(Equal(0))
 			Expect(inspect.OutputToString()).To(ContainSubstring(correctLabels))
 		}
+	})
+
+	It("podman play kube applies pod namespaces", func() {
+		expectedNamespace := "test"
+		pod := getPod(withNamespace(expectedNamespace))
+		err := generatePodKubeYaml(pod, kubeYaml)
+		Expect(err).To(BeNil())
+
+		kube := podmanTest.Podman([]string{"play", "kube", kubeYaml})
+		kube.WaitWithDefaultTimeout()
+		Expect(kube.ExitCode()).To(Equal(0))
+
+		inspect := podmanTest.Podman([]string{"pod", "inspect", pod.Name, "--format", "{{.Namespace}}"})
+		inspect.WaitWithDefaultTimeout()
+		Expect(inspect.ExitCode()).To(Equal(0))
+		Expect(inspect.OutputToString()).To(ContainSubstring(expectedNamespace))
 	})
 })
