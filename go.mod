@@ -11,12 +11,12 @@ require (
 	github.com/containernetworking/cni v0.8.1
 	github.com/containernetworking/plugins v0.9.1
 	github.com/containers/buildah v1.20.1-0.20210402144408-36a37402d0c8
-	github.com/containers/common v0.35.4
+	github.com/containers/common v0.37.1
 	github.com/containers/conmon v2.0.20+incompatible
-	github.com/containers/image/v5 v5.10.5
-	github.com/containers/ocicrypt v1.1.0
+	github.com/containers/image/v5 v5.11.1
+	github.com/containers/ocicrypt v1.1.1
 	github.com/containers/psgo v1.5.2
-	github.com/containers/storage v1.28.1
+	github.com/containers/storage v1.30.1
 	github.com/coreos/go-systemd/v22 v22.3.1
 	github.com/coreos/stream-metadata-go v0.0.0-20210225230131-70edb9eb47b3
 	github.com/cri-o/ocicni v0.2.1-0.20210301205850-541cf7c703cf
@@ -63,7 +63,7 @@ require (
 	github.com/vbauerster/mpb/v6 v6.0.3
 	github.com/vishvananda/netlink v1.1.1-0.20201029203352-d40f9887b852
 	go.etcd.io/bbolt v1.3.5
-	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
+	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2
 	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a
 	golang.org/x/sys v0.0.0-20210324051608-47abb6519492
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
