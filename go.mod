@@ -14,9 +14,9 @@ require (
 	github.com/containers/common v0.35.4
 	github.com/containers/conmon v2.0.20+incompatible
 	github.com/containers/image/v5 v5.10.5
-	github.com/containers/ocicrypt v1.1.0
+	github.com/containers/ocicrypt v1.1.1
 	github.com/containers/psgo v1.5.2
-	github.com/containers/storage v1.28.1
+	github.com/containers/storage v1.32.0
 	github.com/coreos/go-systemd/v22 v22.3.1
 	github.com/coreos/stream-metadata-go v0.0.0-20210225230131-70edb9eb47b3
 	github.com/cri-o/ocicni v0.2.1-0.20210301205850-541cf7c703cf
@@ -37,7 +37,7 @@ require (
 	github.com/gorilla/schema v1.2.0
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/hpcloud/tail v1.0.0
-	github.com/json-iterator/go v1.1.10
+	github.com/json-iterator/go v1.1.11
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/moby/term v0.0.0-20201216013528-df9cb8a40635
@@ -47,10 +47,10 @@ require (
 	github.com/onsi/gomega v1.11.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.0.2-0.20190823105129-775207bd45b6
-	github.com/opencontainers/runc v1.0.0-rc93
-	github.com/opencontainers/runtime-spec v1.0.3-0.20200929063507-e6143ca7d51d
+	github.com/opencontainers/runc v1.0.0-rc95
+	github.com/opencontainers/runtime-spec v1.0.3-0.20210326190908-1c3f411f0417
 	github.com/opencontainers/runtime-tools v0.9.0
-	github.com/opencontainers/selinux v1.8.0
+	github.com/opencontainers/selinux v1.8.1
 	github.com/pkg/errors v0.9.1
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/rootless-containers/rootlesskit v0.14.1
@@ -63,11 +63,11 @@ require (
 	github.com/vbauerster/mpb/v6 v6.0.3
 	github.com/vishvananda/netlink v1.1.1-0.20201029203352-d40f9887b852
 	go.etcd.io/bbolt v1.3.5
-	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
+	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2
 	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a
-	golang.org/x/sys v0.0.0-20210324051608-47abb6519492
+	golang.org/x/sys v0.0.0-20210426230700-d19ff857e887
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
-	k8s.io/api v0.20.5
-	k8s.io/apimachinery v0.20.5
+	k8s.io/api v0.20.6
+	k8s.io/apimachinery v0.20.6
 )
