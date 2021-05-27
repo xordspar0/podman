@@ -286,6 +286,12 @@ func ToSpecGen(ctx context.Context, opts *CtrSpecGenOptions) (*specgen.SpecGener
 				Options: options,
 			}
 			s.Volumes = append(s.Volumes, &namedVolume)
+		case KubeVolumeTypeOverlay:
+			overlayVolume := specgen.OverlayVolume{
+				Destination: volume.MountPath,
+				Source:      volumeSource.Source,
+			}
+			s.Volumes = append(s.Volumes, &overlayVolume)
 		default:
 			return nil, errors.Errorf("Unsupported volume source type")
 		}

@@ -23,6 +23,7 @@ type KubeVolumeType int
 const (
 	KubeVolumeTypeBindMount KubeVolumeType = iota
 	KubeVolumeTypeNamed     KubeVolumeType = iota
+	KubeVolumeTypeOverlay   KubeVolumeType = iota
 )
 
 // nolint:golint
@@ -98,23 +99,58 @@ func VolumeFromPersistentVolumeClaim(claim *v1.PersistentVolumeClaimVolumeSource
 	}, nil
 }
 
-// Create a KubeVolume from one of the supported VolumeSource
-func VolumeFromSource(volumeSource v1.VolumeSource) (*KubeVolume, error) {
-	if volumeSource.HostPath != nil {
-		return VolumeFromHostPath(volumeSource.HostPath)
-	} else if volumeSource.PersistentVolumeClaim != nil {
-		return VolumeFromPersistentVolumeClaim(volumeSource.PersistentVolumeClaim)
+// Create a KubeVolume from a ConfigMapVolumeSource
+func VolumeFromConfigMapVolumeSource(configMapVolumeSource *v1.ConfigMapVolumeSource, configMaps []v1.ConfigMap) (*KubeVolume, error) {
+	var configMap v1.ConfigMap
+	for _, cm := range configMaps {
+		if configMap.Name == configMapVolumeSource.Name {
+			configMap = cm
+			break
+		}
+	}
+
+	if configMap == nil {
+		if configMapVolumeSource.Optional {
+			return nil, nil
+		} else {
+			return nil, errors.Errorf("no such ConfigMap %q", configMapVolumeSource.Name)
+		}
+	}
+
+	if len(configMapVolumeSource.items) > 0 {
+		for item := range configMapVolumeSource.items {
+		}
 	} else {
-		return nil, errors.Errorf("HostPath and PersistentVolumeClaim are currently the only supported VolumeSource")
+		for key, value := range configMap.asdf {
+		}
+	}
+
+	return &KubeVolume{
+		Type:   KubeVolumeTypeOverlay,
+		Source: "hello",
+	}, nil
+}
+
+// Create a KubeVolume from one of the supported VolumeSource
+func VolumeFromSource(volumeSource v1.VolumeSource, configMaps []v1.ConfigMap) (*KubeVolume, error) {
+	switch {
+	case volumeSource.HostPath != nil:
+		return VolumeFromHostPath(volumeSource.HostPath)
+	case volumeSource.PersistentVolumeClaim != nil:
+		return VolumeFromPersistentVolumeClaim(volumeSource.PersistentVolumeClaim)
+	case volumeSource.ConfigMap != nil:
+		return VolumeFromConfigMapVolumeSource(volumeSource.ConfigMap, configMaps)
+	default:
+		return nil, errors.Errorf("HostPath, PersistentVolumeClaim, and ConfigMap are currently the only supported VolumeSource")
 	}
 }
 
 // Create a map of volume name to KubeVolume
-func InitializeVolumes(specVolumes []v1.Volume) (map[string]*KubeVolume, error) {
+func InitializeVolumes(specVolumes []v1.Volume, configMaps []v1.ConfigMap) (map[string]*KubeVolume, error) {
 	volumes := make(map[string]*KubeVolume)
 
 	for _, specVolume := range specVolumes {
-		volume, err := VolumeFromSource(specVolume.VolumeSource)
+		volume, err := VolumeFromSource(specVolume.VolumeSource, configMaps)
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to create volume %q", specVolume.Name)
 		}

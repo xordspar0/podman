@@ -225,11 +225,6 @@ func (ic *ContainerEngine) playKubePod(ctx context.Context, podName string, podY
 		writer = os.Stderr
 	}
 
-	volumes, err := kube.InitializeVolumes(podYAML.Spec.Volumes)
-	if err != nil {
-		return nil, err
-	}
-
 	seccompPaths, err := kube.InitializeSeccompPaths(podYAML.ObjectMeta.Annotations, options.SeccompProfileRoot)
 	if err != nil {
 		return nil, err
@@ -261,6 +256,11 @@ func (ic *ContainerEngine) playKubePod(ctx context.Context, podName string, podY
 		}
 
 		configMaps = append(configMaps, cm)
+	}
+
+	volumes, err := kube.InitializeVolumes(podYAML.Spec.Volumes, configMaps)
+	if err != nil {
+		return nil, err
 	}
 
 	containers := make([]*libpod.Container, 0, len(podYAML.Spec.Containers))
