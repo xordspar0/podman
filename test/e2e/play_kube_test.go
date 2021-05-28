@@ -939,6 +939,7 @@ type PersistentVolumeClaim struct {
 type ConfigMapVolume struct {
 	Name  string
 	Items []map[string]string
+	Optional bool
 }
 
 type Volume struct {
@@ -2100,11 +2101,9 @@ VOLUME %s`, ALPINE, hostPathDir+"/")
 	})
 
 	It("podman play kube with a missing optional ConfigMap volume", func() {
-		volumeName := "appConfig"
-
 		ctr := getCtr(withVolumeMount("/test", false), withImage(BB))
 		pod := getPod(withVolume(
-			Volume{
+			&Volume{
 				VolumeType: "ConfigMap",
 				Name:       "optional",
 				ConfigMap: ConfigMapVolume{

@@ -291,7 +291,7 @@ func ToSpecGen(ctx context.Context, opts *CtrSpecGenOptions) (*specgen.SpecGener
 				Destination: volume.MountPath,
 				Source:      volumeSource.Source,
 			}
-			s.Volumes = append(s.Volumes, &overlayVolume)
+			s.OverlayVolumes = append(s.OverlayVolumes, &overlayVolume)
 		default:
 			return nil, errors.Errorf("Unsupported volume source type")
 		}
