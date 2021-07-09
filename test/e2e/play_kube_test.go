@@ -282,7 +282,7 @@ spec:
 {{ end }}
 {{ with .Volumes }}
   volumes:
-  {{ range . }}
+  {{- range . }}
   - name: {{ .Name }}
     {{- if (eq .VolumeType "HostPath") }}
     hostPath:
@@ -292,6 +292,18 @@ spec:
     {{- if (eq .VolumeType "PersistentVolumeClaim") }}
     persistentVolumeClaim:
       claimName: {{ .PersistentVolumeClaim.ClaimName }}
+    {{- end }}
+    {{- if (eq .VolumeType "ConfigMap") }}
+    configMap:
+      name: {{ .ConfigMap.Name }}
+    optional: {{ .ConfigMap.Optional }}
+    {{- with .ConfigMap.Items }}
+    items:
+    {{- range . }}
+      key: {{ .key }}
+      path: {{ .path }}
+    {{- end }}
+    {{- end }}
     {{- end }}
   {{ end }}
 {{ end }}
